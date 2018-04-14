@@ -24,6 +24,8 @@
     },
     "include": [
         "src/main/webapp/app",
-        "src/test/javascript/"
+        "src/test/javascript/",
+        "node_modules/angular-bootstrap-md/**/*.ts",
+        
     ]
 }
