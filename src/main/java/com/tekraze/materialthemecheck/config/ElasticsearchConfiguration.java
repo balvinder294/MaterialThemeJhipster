@@ -1,23 +1,51 @@
 package com.tekraze.materialthemecheck.config;
 
-import java.io.IOException;
-
-import org.elasticsearch.client.Client;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.EntityMapper;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.vanroy.springdata.jest.JestElasticsearchTemplate;
+import com.github.vanroy.springdata.jest.mapper.DefaultJestResultsMapper;
+import io.searchbox.client.JestClient;
+import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.EntityMapper;
+import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
+import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
+import org.springframework.data.mapping.MappingException;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
+@EnableConfigurationProperties(ElasticsearchProperties.class)
 public class ElasticsearchConfiguration {
 
+    private ObjectMapper mapper;
+
+    public ElasticsearchConfiguration(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
     @Bean
-    public ElasticsearchTemplate elasticsearchTemplate(Client client, Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
-        return new ElasticsearchTemplate(client, new CustomEntityMapper(jackson2ObjectMapperBuilder.createXmlMapper(false).build()));
+    public EntityMapper getEntityMapper() {
+        return new CustomEntityMapper(mapper);
+    }
+
+    @Bean
+    @Primary
+    public ElasticsearchOperations elasticsearchTemplate(JestClient jestClient,
+                                                         ElasticsearchConverter elasticsearchConverter,
+                                                         SimpleElasticsearchMappingContext mappingContext,
+                                                         EntityMapper entityMapper) {
+        return new JestElasticsearchTemplate(
+            jestClient,
+            elasticsearchConverter,
+            new DefaultJestResultsMapper(mappingContext, entityMapper));
     }
 
     public class CustomEntityMapper implements EntityMapper {
@@ -28,6 +56,9 @@ public class ElasticsearchConfiguration {
             this.objectMapper = objectMapper;
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
+            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
+            objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
         }
 
         @Override
@@ -39,5 +70,24 @@ public class ElasticsearchConfiguration {
         public <T> T mapToObject(String source, Class<T> clazz) throws IOException {
             return objectMapper.readValue(source, clazz);
         }
+
+        @Override
+        public Map<String, Object> mapObject(Object source) {
+            try {
+                return objectMapper.readValue(mapToString(source), HashMap.class);
+            } catch (IOException e) {
+                throw new MappingException(e.getMessage(), e);
+            }
+        }
+
+        @Override
+        public <T> T readObject(Map<String, Object> source, Class<T> targetType) {
+            try {
+                return mapToObject(mapToString(source), targetType);
+            } catch (IOException e) {
+                throw new MappingException(e.getMessage(), e);
+            }
+        }
     }
+
 }

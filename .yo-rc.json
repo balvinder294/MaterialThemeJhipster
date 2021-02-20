@@ -4,7 +4,7 @@
       "packageName": "com.tekraze.materialthemecheck",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "4.13.3",
+    "jhipsterVersion": "6.10.5",
     "baseName": "MaterialThemeCheck",
     "packageName": "com.tekraze.materialthemecheck",
     "packageFolder": "com/tekraze/materialthemecheck",
@@ -25,14 +25,19 @@
     "jwtSecretKey": "03f34bb565b4d21b1ba1805abb7814abb2644d3e",
     "clientFramework": "angularX",
     "useSass": true,
-    "clientPackageManager": "yarn",
+    "clientPackageManager": "npm",
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": true,
+    "enableTranslation": false,
     "nativeLanguage": "en",
-    "languages": [
-      "en"
-    ]
+    "languages": ["en"],
+    "embeddableLaunchScript": false,
+    "clientTheme": "none",
+    "creationTimestamp": 1613842052874,
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
   }
 }

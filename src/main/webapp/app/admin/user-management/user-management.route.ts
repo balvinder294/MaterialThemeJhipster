@@ -1,75 +1,53 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
-import { JhiPaginationUtil } from 'ng-jhipster';
+import { User, IUser } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
+import { UserManagementComponent } from './user-management.component';
+import { UserManagementDetailComponent } from './user-management-detail.component';
+import { UserManagementUpdateComponent } from './user-management-update.component';
 
-import { UserMgmtComponent } from './user-management.component';
-import { UserMgmtDetailComponent } from './user-management-detail.component';
-import { UserDialogComponent } from './user-management-dialog.component';
-import { UserDeleteDialogComponent } from './user-management-delete-dialog.component';
+@Injectable({ providedIn: 'root' })
+export class UserManagementResolve implements Resolve<IUser> {
+  constructor(private service: UserService) {}
 
-import { Principal } from '../../shared';
-
-@Injectable()
-export class UserResolve implements CanActivate {
-
-    constructor(private principal: Principal) { }
-
-    canActivate() {
-        return this.principal.identity().then((account) => this.principal.hasAnyAuthority(['ROLE_ADMIN']));
+  resolve(route: ActivatedRouteSnapshot): Observable<IUser> {
+    const id = route.params['login'];
+    if (id) {
+      return this.service.find(id);
     }
+    return of(new User());
+  }
 }
 
-@Injectable()
-export class UserResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-        };
-    }
-}
-
-export const userMgmtRoute: Routes = [
-    {
-        path: 'user-management',
-        component: UserMgmtComponent,
-        resolve: {
-            'pagingParams': UserResolvePagingParams
-        },
-        data: {
-            pageTitle: 'userManagement.home.title'
-        }
+export const userManagementRoute: Routes = [
+  {
+    path: '',
+    component: UserManagementComponent,
+    data: {
+      defaultSort: 'id,asc',
     },
-    {
-        path: 'user-management/:login',
-        component: UserMgmtDetailComponent,
-        data: {
-            pageTitle: 'userManagement.home.title'
-        }
-    }
-];
-
-export const userDialogRoute: Routes = [
-    {
-        path: 'user-management-new',
-        component: UserDialogComponent,
-        outlet: 'popup'
+  },
+  {
+    path: ':login/view',
+    component: UserManagementDetailComponent,
+    resolve: {
+      user: UserManagementResolve,
     },
-    {
-        path: 'user-management/:login/edit',
-        component: UserDialogComponent,
-        outlet: 'popup'
+  },
+  {
+    path: 'new',
+    component: UserManagementUpdateComponent,
+    resolve: {
+      user: UserManagementResolve,
     },
-    {
-        path: 'user-management/:login/delete',
-        component: UserDeleteDialogComponent,
-        outlet: 'popup'
-    }
+  },
+  {
+    path: ':login/edit',
+    component: UserManagementUpdateComponent,
+    resolve: {
+      user: UserManagementResolve,
+    },
+  },
 ];

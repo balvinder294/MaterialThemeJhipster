@@ -1,20 +1,22 @@
-/* after changing this file run 'yarn run webpack:build' */
-$fa-font-path: '~font-awesome/fonts';
-// Images Path for angular-bootstrap-md
-$image-path: '../../../../../node_modules/angular-bootstrap-md/img' !default;
-// Fonts Path for angular-bootstrap-md
-$roboto-font-path: "../../../../../node_modules/angular-bootstrap-md/font/roboto/" !default;
+/* after changing this file run 'npm run webpack:build' */
 
 /***************************
 put Sass variables here:
 eg $input-color: red;
 ****************************/
-// Override Boostrap variables
-@import "bootstrap-variables";
+// Override Bootstrap variables
+@import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
-//@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/font-awesome/scss/font-awesome';
-@import 'node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap';
-@import 'node_modules/angular-bootstrap-md/scss/mdb-free';
+@import '~bootstrap/scss/bootstrap';
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/regular.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import '~angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss';
+@import '~angular-bootstrap-md/assets/scss/mdb.scss';
+@import '~animate.css/animate.css';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

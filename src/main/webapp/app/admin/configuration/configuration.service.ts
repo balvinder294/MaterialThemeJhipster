@@ -1,54 +1,68 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable()
-export class JhiConfigurationService {
+import { SERVER_API_URL } from 'app/app.constants';
 
-    constructor(private http: Http) {
-    }
+export interface ConfigProps {
+  contexts: Contexts;
+}
 
-    get(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/configprops').map((res: Response) => {
-            const properties: any[] = [];
+export interface Contexts {
+  [key: string]: Context;
+}
 
-            const propertiesObject = res.json();
+export interface Context {
+  beans: Beans;
+  parentId?: any;
+}
 
-            for (const key in propertiesObject) {
-                if (propertiesObject.hasOwnProperty(key)) {
-                    properties.push(propertiesObject[key]);
-                }
-            }
+export interface Beans {
+  [key: string]: Bean;
+}
 
-            return properties.sort((propertyA, propertyB) => {
-                return (propertyA.prefix === propertyB.prefix) ? 0 :
-                       (propertyA.prefix < propertyB.prefix) ? -1 : 1;
-            });
-        });
-    }
+export interface Bean {
+  prefix: string;
+  properties: any;
+}
 
-    getEnv(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/env').map((res: Response) => {
-            const properties: any = {};
+export interface Env {
+  activeProfiles?: string[];
+  propertySources: PropertySource[];
+}
 
-            const propertiesObject = res.json();
+export interface PropertySource {
+  name: string;
+  properties: Properties;
+}
 
-            for (const key in propertiesObject) {
-                if (propertiesObject.hasOwnProperty(key)) {
-                    const valsObject = propertiesObject[key];
-                    const vals: any[] = [];
+export interface Properties {
+  [key: string]: Property;
+}
 
-                    for (const valKey in valsObject) {
-                        if (valsObject.hasOwnProperty(valKey)) {
-                            vals.push({key: valKey, val: valsObject[valKey]});
-                        }
-                    }
-                    properties[key] = vals;
-                }
-            }
+export interface Property {
+  value: string;
+  origin?: string;
+}
 
-            return properties;
-        });
-    }
+@Injectable({ providedIn: 'root' })
+export class ConfigurationService {
+  constructor(private http: HttpClient) {}
+
+  getBeans(): Observable<Bean[]> {
+    return this.http.get<ConfigProps>(SERVER_API_URL + 'management/configprops').pipe(
+      map(configProps =>
+        Object.values(
+          Object.values(configProps.contexts)
+            .map(context => context.beans)
+            .reduce((allBeans: Beans, contextBeans: Beans) => ({ ...allBeans, ...contextBeans }))
+        )
+      )
+    );
+  }
+
+  getPropertySources(): Observable<PropertySource[]> {
+    return this.http.get<Env>(SERVER_API_URL + 'management/env').pipe(map(env => env.propertySources));
+  }
 }

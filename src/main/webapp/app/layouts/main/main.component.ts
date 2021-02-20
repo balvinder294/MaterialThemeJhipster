@@ -1,32 +1,43 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
 
-import { JhiLanguageHelper } from '../../shared';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
-    selector: 'jhi-main',
-    templateUrl: './main.component.html'
+  selector: 'jhi-main',
+  templateUrl: './main.component.html',
 })
-export class JhiMainComponent implements OnInit {
+export class MainComponent implements OnInit {
+  constructor(private accountService: AccountService, private titleService: Title, private router: Router) {}
 
-    constructor(
-        private jhiLanguageHelper: JhiLanguageHelper,
-        private router: Router
-    ) {}
+  ngOnInit(): void {
+    // try to log in automatically
+    this.accountService.identity().subscribe();
 
-    private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
-        let title: string = (routeSnapshot.data && routeSnapshot.data['pageTitle']) ? routeSnapshot.data['pageTitle'] : 'materialThemeCheckApp';
-        if (routeSnapshot.firstChild) {
-            title = this.getPageTitle(routeSnapshot.firstChild) || title;
-        }
-        return title;
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateTitle();
+      }
+      if (event instanceof NavigationError && event.error.status === 404) {
+        this.router.navigate(['/404']);
+      }
+    });
+  }
+
+  private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {
+    let title: string = routeSnapshot.data && routeSnapshot.data['pageTitle'] ? routeSnapshot.data['pageTitle'] : '';
+    if (routeSnapshot.firstChild) {
+      title = this.getPageTitle(routeSnapshot.firstChild) || title;
     }
+    return title;
+  }
 
-    ngOnInit() {
-        this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) {
-                this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
-            }
-        });
+  private updateTitle(): void {
+    let pageTitle = this.getPageTitle(this.router.routerState.snapshot.root);
+    if (!pageTitle) {
+      pageTitle = 'MaterialThemeCheck';
     }
+    this.titleService.setTitle(pageTitle);
+  }
 }
