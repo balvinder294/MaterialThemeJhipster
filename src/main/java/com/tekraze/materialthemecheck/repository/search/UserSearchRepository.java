@@ -3,6 +3,7 @@ package com.tekraze.materialthemecheck.repository.search;
 import com.tekraze.materialthemecheck.domain.User;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+
 /**
  * Spring Data Elasticsearch repository for the User entity.
  */

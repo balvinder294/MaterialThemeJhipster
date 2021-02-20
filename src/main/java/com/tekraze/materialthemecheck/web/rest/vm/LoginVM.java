@@ -13,7 +13,7 @@ public class LoginVM {
     private String username;
 
     @NotNull
-    @Size(min = ManagedUserVM.PASSWORD_MIN_LENGTH, max = ManagedUserVM.PASSWORD_MAX_LENGTH)
+    @Size(min = 4, max = 100)
     private String password;
 
     private Boolean rememberMe;
@@ -42,6 +42,7 @@ public class LoginVM {
         this.rememberMe = rememberMe;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LoginVM{" +
