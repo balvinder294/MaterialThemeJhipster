@@ -24,7 +24,7 @@
         <maven.version>3.3.9</maven.version>
         <java.version>1.8</java.version>
         <node.version>v12.16.1</node.version>
-        <yarn.version>v1.22.4</yarn.version>
+        <npm.version>6.14.5</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -892,25 +892,25 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>install node and yarn</id>
+                                <id>install node and npm</id>
                                 <goals>
-                                    <goal>install-node-and-yarn</goal>
+                                    <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
                                     <nodeVersion>${node.version}</nodeVersion>
-                                    <yarnVersion>${yarn.version}</yarnVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>yarn install</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                             </execution>
                             <execution>
                                 <id>webpack build dev</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
@@ -918,7 +918,7 @@
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
-                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
                         </executions>
@@ -991,19 +991,19 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>install node and yarn</id>
+                                <id>install node and npm</id>
                                 <goals>
-                                    <goal>install-node-and-yarn</goal>
+                                    <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
                                     <nodeVersion>${node.version}</nodeVersion>
-                                    <yarnVersion>${yarn.version}</yarnVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>yarn install</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <configuration>
                                     <arguments>install</arguments>
@@ -1012,18 +1012,18 @@
                             <execution>
                                 <id>webpack build test</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
                                     <arguments>run webpack:test</arguments>
-                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
                             <execution>
                                 <id>webpack build prod</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
@@ -1031,7 +1031,7 @@
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
-                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
                         </executions>
@@ -1129,8 +1129,8 @@
                                                 <artifactId>frontend-maven-plugin</artifactId>
                                                 <versionRange>${frontend-maven-plugin.version}</versionRange>
                                                 <goals>
-                                                    <goal>install-node-and-yarn</goal>
-                                                    <goal>yarn</goal>
+                                                    <goal>install-node-and-npm</goal>
+                                                    <goal>npm</goal>
                                                 </goals>
                                             </pluginExecutionFilter>
                                             <action>

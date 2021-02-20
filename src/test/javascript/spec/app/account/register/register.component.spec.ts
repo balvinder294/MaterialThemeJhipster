@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
-import { JhiLanguageService } from 'ng-jhipster';
 
-import { MockLanguageService } from '../../../helpers/mock-language.service';
 import { MaterialThemeCheckTestModule } from '../../../test.module';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
 import { RegisterService } from 'app/account/register/register.service';
@@ -41,8 +39,8 @@ describe('Component Tests', () => {
     });
 
     it('should update success to true after creating an account', inject(
-      [RegisterService, JhiLanguageService],
-      fakeAsync((service: RegisterService, mockTranslate: MockLanguageService) => {
+      [RegisterService],
+      fakeAsync((service: RegisterService) => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.registerForm.patchValue({
           password: 'password',
@@ -59,7 +57,6 @@ describe('Component Tests', () => {
           langKey: 'en',
         });
         expect(comp.success).toBe(true);
-        expect(mockTranslate.getCurrentLanguageSpy).toHaveBeenCalled();
         expect(comp.errorUserExists).toBe(false);
         expect(comp.errorEmailExists).toBe(false);
         expect(comp.error).toBe(false);

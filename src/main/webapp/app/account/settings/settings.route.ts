@@ -9,7 +9,7 @@ export const settingsRoute: Route = {
   component: SettingsComponent,
   data: {
     authorities: [Authority.USER],
-    pageTitle: 'global.menu.account.settings',
+    pageTitle: 'Settings',
   },
   canActivate: [UserRouteAccessService],
 };

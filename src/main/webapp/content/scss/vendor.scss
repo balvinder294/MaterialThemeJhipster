@@ -1,9 +1,4 @@
-/* after changing this file run 'yarn run webpack:build' */
-$fa-font-path: '~font-awesome/fonts';
-// Images Path for angular-bootstrap-md
-$image-path: '~angular-bootstrap-md/img' !default;
-// Fonts Path for angular-bootstrap-md
-$roboto-font-path: "~angular-bootstrap-md/font/roboto/" !default;
+/* after changing this file run 'npm run webpack:build' */
 
 /***************************
 put Sass variables here:
@@ -12,10 +7,6 @@ eg $input-color: red;
 // Override Bootstrap variables
 @import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
-//@import 'node_modules/bootstrap/scss/bootstrap';
-@import '~font-awesome/scss/font-awesome';
-@import '~angular-bootstrap-md/scss/bootstrap/bootstrap';
-@import '~angular-bootstrap-md/scss/mdb-free';
 @import '~bootstrap/scss/bootstrap';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

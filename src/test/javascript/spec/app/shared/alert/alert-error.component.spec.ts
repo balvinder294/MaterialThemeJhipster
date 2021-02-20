@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { MaterialThemeCheckTestModule } from '../../../test.module';
 import { AlertErrorComponent } from 'app/shared/alert/alert-error.component';
@@ -15,7 +14,7 @@ describe('Component Tests', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [MaterialThemeCheckTestModule, TranslateModule.forRoot()],
+        imports: [MaterialThemeCheckTestModule],
         declarations: [AlertErrorComponent],
         providers: [
           JhiEventManager,
@@ -41,7 +40,7 @@ describe('Component Tests', () => {
         eventManager.broadcast({ name: 'materialThemeCheckApp.httpError', content: { status: 0 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.server.not.reachable');
+        expect(comp.alerts[0].msg).toBe('Server not reachable');
       });
 
       it('Should display an alert on status 404', () => {
@@ -49,7 +48,7 @@ describe('Component Tests', () => {
         eventManager.broadcast({ name: 'materialThemeCheckApp.httpError', content: { status: 404 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.url.not.found');
+        expect(comp.alerts[0].msg).toBe('Not found');
       });
 
       it('Should display an alert on generic error', () => {
@@ -116,7 +115,7 @@ describe('Component Tests', () => {
         eventManager.broadcast({ name: 'materialThemeCheckApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.Size');
+        expect(comp.alerts[0].msg).toBe('Error on field "MinField"');
       });
 
       it('Should display an alert on status 400 for error headers', () => {

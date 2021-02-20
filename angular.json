@@ -31,6 +31,6 @@
   },
   "defaultProject": "material-theme-check",
   "cli": {
-    "packageManager": "yarn"
+    "packageManager": "npm"
   }
 }

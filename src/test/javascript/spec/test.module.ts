@@ -4,9 +4,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SessionStorageService, LocalStorageService } from 'ngx-webstorage';
-import { JhiLanguageService, JhiDataUtils, JhiDateUtils, JhiEventManager, JhiAlertService, JhiParseLinks } from 'ng-jhipster';
+import { JhiDataUtils, JhiDateUtils, JhiEventManager, JhiAlertService, JhiParseLinks } from 'ng-jhipster';
 
-import { MockLanguageService } from './helpers/mock-language.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { MockLoginModalService } from './helpers/mock-login-modal.service';
@@ -22,10 +21,6 @@ import { MockEventManager } from './helpers/mock-event-manager.service';
     JhiDataUtils,
     JhiDateUtils,
     JhiParseLinks,
-    {
-      provide: JhiLanguageService,
-      useClass: MockLanguageService,
-    },
     {
       provide: JhiEventManager,
       useClass: MockEventManager,
