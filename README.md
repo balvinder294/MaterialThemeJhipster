@@ -1,3 +1,9 @@
+> Note : Updated with latest MD-bootstrap on 21st Feb 2021
+
+# Do visit [tekraze.com](https://tekraze.com) blog for more tech posts
+
+# Visit demo page to see demo code or check demo component
+
 # MaterialThemeCheck
 
 This application was generated using JHipster 6.10.5, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).

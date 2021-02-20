@@ -6,7 +6,7 @@ import { HOME_ROUTE } from './home.route';
 import { HomeComponent } from './home.component';
 
 @NgModule({
-  imports: [MaterialThemeCheckSharedModule, RouterModule.forChild([HOME_ROUTE])],
+  imports: [MaterialThemeCheckSharedModule, RouterModule.forChild([...HOME_ROUTE])],
   declarations: [HomeComponent],
 })
 export class MaterialThemeCheckHomeModule {}

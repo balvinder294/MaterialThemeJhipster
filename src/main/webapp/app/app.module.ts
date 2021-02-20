@@ -14,6 +14,7 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { DemoComponent } from './demo/demo.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     MaterialThemeCheckAppRoutingModule,
     MDBBootstrapModule.forRoot(),
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, DemoComponent],
   bootstrap: [MainComponent],
 })
 export class MaterialThemeCheckAppModule {}
